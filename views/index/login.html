@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>学IT - 后台管理系统</title>
-    <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="./assets/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="./assets/nprogress/nprogress.css">
-    <link rel="stylesheet" href="./less/index.css">
+    <link rel="stylesheet" href="/public/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/public/assets/font-awesome/css/font-awesome.css">
+    <link rel="stylesheet" href="/public/assets/nprogress/nprogress.css">
+    <link rel="stylesheet" href="/public/less/index.css">
 </head>
 <body>
     <!-- 登录 -->
@@ -15,25 +15,56 @@
             <div class="avatar">
                 <img src="./uploads/monkey.png" class="img-circle" alt="">
             </div>
-            <form action="" class="col-md-offset-1 col-md-10">
+            <form id="form-login" class="col-md-offset-1 col-md-10">
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon">
                         <i class="fa fa-user"></i>
                     </span>
-                    <input type="text" class="form-control" placeholder="用户名">
+                    <input type="text" id="tc_name" name="tc_name" class="form-control" placeholder="用户名">
                 </div>
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon">
                         <i class="fa fa-key"></i>
                     </span>
-                    <input type="password" class="form-control" placeholder="密码">
+                    <input type="password" id="tc_pass" name="tc_pass" class="form-control" placeholder="密码">
                 </div>
                 <button type="submit" class="btn btn-lg btn-primary btn-block">登 录</button>
             </form>
         </div>
     </div>
     
-    <script src="./assets/jquery/jquery.min.js"></script>
-    <script src="./assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/public/assets/jquery/jquery.min.js"></script>
+    <script src="/public/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        var formLoin=$('#form-login')
+        var N=$('#tc_name');
+        var P=$('#tc_pass');
+      formLoin.on('submit',function (e) {
+
+        if(N.val().trim()===''||P.val().trim()===''){
+          alert('亲,用户名和密码是必填项哦')
+          return false;
+        }
+//        表单序列化  input必须有name
+    var params=$(this).serialize()
+        console.log(params);
+//        阻止submit的默认行为
+//        e.preventDefault()
+          $.ajax({
+          url:'/api/login',
+          type:'get',
+          data:params,
+            dataType:'json',
+            success:function (data) {
+              
+             if(data.code===200){
+             location='/';
+             }
+            }
+          })
+//        阻止submit的默认行为
+        return false;
+      })
+    </script>
 </body>
 </html>
